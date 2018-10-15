@@ -10,42 +10,49 @@ import (
 	"github.com/olekukonko/tablewriter"
 )
 
-type Colorize struct {
-	ItemNum int
-}
-
 var (
 	id      string
 	names   string
-	labels  string
+	repos   string
+	tag     string
 	image   string
 	created string
 	status  string
 	color   string
 	size    string
+	data    [][]string
 )
 
-func New() Colorize {
-	return Colorize{}
-}
+const (
+	evenLineColor = "32m"
+	oddLineColor  = "36m"
+)
 
-func (c *Colorize) Container(containers []types.Container) {
+func Container(containers []types.Container) {
 	table := tablewriter.NewWriter(os.Stdout)
 	table.SetHeader([]string{"ID", "NAMES", "IMAGE", "STATUS"})
 
-	var data [][]string
-	for _, container := range containers {
-		c.ItemNum++
-		if c.ItemNum%2 == 0 {
-			color = "32m"
+	for i, container := range containers {
+
+		if i%2 == 0 {
+			color = evenLineColor
 		} else {
-			color = "36m"
+			color = oddLineColor
 		}
 
-		id = fmt.Sprintf("\x1b[%s%s\x1b[0m\n", color, container.ID[:10])
-		names = fmt.Sprintf("\x1b[%s%s\x1b[0m\n", color, container.Image)
-		image = fmt.Sprintf("\x1b[%s%s\x1b[0m\n", color, container.Names)
-		status = fmt.Sprintf("\x1b[%s%v\x1b[0m\n", color, strings.Split(container.Status, " ")[0])
+		id = fmt.Sprintf("\x1b[%s%s\x1b[0m", color, container.ID[:10])
+		names = fmt.Sprintf(
+			"\x1b[%s%s\x1b[0m",
+			color,
+			strings.Replace(strings.Replace(container.Names[0], " ", "", -1), "/", "", -1))
+		image = fmt.Sprintf(
+			"\x1b[%s%s\x1b[0m",
+			color,
+			container.Image)
+		status = fmt.Sprintf(
+			"\x1b[%s%v\x1b[0m",
+			color,
+			strings.Replace(container.Status, " ", "-", -1))
 
 		data = append(data, []string{id, names, image, status})
 	}
@@ -54,24 +61,39 @@ func (c *Colorize) Container(containers []types.Container) {
 	table.Render()
 }
 
-func (c *Colorize) Image(images []types.ImageSummary) {
+func Image(images []types.ImageSummary) {
 	table := tablewriter.NewWriter(os.Stdout)
-	table.SetHeader([]string{"REPOSITORY", "LABELS", "SIZE"})
+	table.SetHeader([]string{"REPOSITORY", "TAG", "IMAGE ID", "SIZE"})
 
-	var data [][]string
-	for _, image := range images {
-		c.ItemNum++
-		if c.ItemNum%2 == 0 {
-			color = "32m"
+	for i, image := range images {
+		if i%2 == 0 {
+			color = evenLineColor
 		} else {
-			color = "36m"
+			color = oddLineColor
 		}
 
-		id = fmt.Sprintf("\x1b[%s%s\x1b[0m\n", color, image.ID[7:19])
-		labels = fmt.Sprintf("\x1b[%s%s\x1b[0m\n", color, image.RepoTags)
-		size = fmt.Sprintf("\x1b[%s%s\x1b[0m\n", color, strings.Replace(humanize.Bytes(uint64(image.Size)), " ", "", -1))
+		repoTags := strings.Split(strings.Replace(image.RepoTags[0], " ", "", -1), ":")
 
-		data = append(data, []string{id, labels, size})
+		repos = fmt.Sprintf(
+			"\x1b[%s%s\x1b[0m",
+			color,
+			repoTags[0],
+		)
+		tag = fmt.Sprintf(
+			"\x1b[%s%s\x1b[0m",
+			color,
+			repoTags[1],
+		)
+		id = fmt.Sprintf(
+			"\x1b[%s%s\x1b[0m",
+			color,
+			image.ID[7:19])
+		size = fmt.Sprintf(
+			"\x1b[%s%s\x1b[0m",
+			color,
+			strings.Replace(humanize.Bytes(uint64(image.Size)), " ", "", -1))
+
+		data = append(data, []string{repos, tag, id, size})
 	}
 
 	table.AppendBulk(data)
