@@ -11,6 +11,7 @@ require (
 	github.com/olekukonko/tablewriter v0.0.0-20180912035003-be2c049b30cc
 	github.com/ramya-rao-a/go-outline v0.0.0-20170803230019-9e9d089bb61a // indirect
 	github.com/sqs/goreturns v0.0.0-20180302073349-83e02874ec12 // indirect
+	github.com/urfave/cli v1.20.0
 	github.com/uudashr/gopkgs v2.0.1+incompatible // indirect
 	golang.org/x/net v0.0.0-20181011144130-49bb7cea24b1 // indirect
 	golang.org/x/tools v0.0.0-20181013182035-5e66757b835f // indirect

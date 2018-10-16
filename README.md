@@ -1,4 +1,5 @@
-colordocker
+color docker
+<img src="https://img.shields.io/badge/go-v1.11-blue.svg"/>
 --
 
 in development ...

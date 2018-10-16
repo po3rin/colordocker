@@ -4,28 +4,32 @@ import (
 	"colordocker/colorize"
 	"colordocker/docker"
 	"context"
-	"flag"
 	"fmt"
+	"os"
 
 	"github.com/docker/docker/api/types"
+	"github.com/urfave/cli"
 )
 
 func main() {
-	flag.Parse()
-	args := flag.Args()
-	if len(args) == 0 {
-		fmt.Println("no arguments.")
-		return
+	app := cli.NewApp()
+	app.Name = "colordocker"
+	app.Usage = "colordocker is commnad line tool that color output docker command."
+	app.Version = "0.0.1"
+	app.Action = func(context *cli.Context) error {
+		switch context.Args().Get(0) {
+		case "ps":
+			colorizeContainer()
+		case "image":
+			colorizeImage()
+		case "":
+			fmt.Println("argument is empty.")
+		default:
+			fmt.Println("argument is invalid.")
+		}
+		return nil
 	}
-
-	switch args[0] {
-	case "ps":
-		colorizeContainer()
-	case "image":
-		colorizeImage()
-	default:
-		fmt.Println("argument is invalid.")
-	}
+	app.Run(os.Args)
 }
 
 func colorizeContainer() {
