@@ -20,12 +20,12 @@ func main() {
 		switch context.Args().Get(0) {
 		case "ps":
 			colorizeContainer()
-		case "image":
+		case "images":
 			colorizeImage()
 		case "":
-			fmt.Println("argument is empty.")
+			fmt.Println("msg: argument is empty.\nplease exec 'cdocker help'")
 		default:
-			fmt.Println("argument is invalid.")
+			fmt.Println("msg: argument is invalid.\nplease exec 'cdocker help'")
 		}
 		return nil
 	}
