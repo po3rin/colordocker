@@ -1,13 +1,12 @@
 package main
 
 import (
-	"colordocker/colorize"
-	"colordocker/docker"
 	"context"
 	"fmt"
 	"os"
 
 	"github.com/docker/docker/api/types"
+	"github.com/po3rin/colordocker"
 	"github.com/urfave/cli"
 )
 
@@ -33,18 +32,18 @@ func main() {
 }
 
 func colorizeContainer() {
-	cli := docker.Client
+	cli := colordocker.Client
 	containers, err := cli.ContainerList(context.Background(), types.ContainerListOptions{})
 	if err != nil {
 		panic(err)
 	}
-	colorize.Container(containers)
+	colordocker.Container(containers)
 }
 
 func colorizeImage() {
-	cli := docker.Client
+	cli := colordocker.Client
 	images, err := cli.ImageList(context.Background(), types.ImageListOptions{})
-	colorize.Image(images)
+	colordocker.Image(images)
 	if err != nil {
 		panic(err)
 	}

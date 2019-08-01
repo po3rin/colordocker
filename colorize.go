@@ -1,4 +1,4 @@
-package colorize
+package colordocker
 
 import (
 	"fmt"

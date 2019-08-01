@@ -6,14 +6,20 @@ color docker
 
 colordocker is commnad line tool that color output docker command.
 
+## Instalation
+
+```bash
+go get -u github.com/po3rin/colordocker/cmd/cdocker
+```
+
 ## How to use
 
 list containers.
 ```
-$ colordocker ps
+$ cdocker ps
 ```
 
-list images.    
+list images.
 ```
-$ colordocker images
+$ cdocker images
 ```
